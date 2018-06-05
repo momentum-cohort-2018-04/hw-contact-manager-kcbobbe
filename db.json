@@ -1,6 +1,24 @@
 {
   "contacts": [
-    {"id": 1},
-    {"id": 2}
+    {
+      "id": 1,
+      "name": "Katie",
+      "city": "Chapel Hill"
+    },
+    {
+      "id": 2,
+      "name": "Mark",
+      "city": "Burnsville"
+    },
+    {
+      "id": 3,
+      "name": "Chris",
+      "city": "Chicago"
+    },
+    {
+      "id": 4,
+      "name": "Sarah",
+      "city": "Chapel Hill"
+    }
   ]
 }

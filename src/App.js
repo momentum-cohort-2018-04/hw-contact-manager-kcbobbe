@@ -17,7 +17,7 @@ class App extends Component {
     render() {
       return (
         <div>
-        {this.state.loggedOut && 
+        {this.state.loggedOut ?(
         <div className = "App">
           <div className = "input-field">
             <label>Username: </label>
@@ -31,16 +31,21 @@ class App extends Component {
                 
           <button type="button" className="button" onClick = {this.showContacts.bind(this)}>Submit!</button>
         </div>
-        }
-        {/* put in else statement */}
+        
+        ) : (
           <div>
+          <button type = "button" className="button" onClick = {this.logout.bind(this)}>LOGOUT</button>
           <button type="button" className="button" onClick = {this.newContact.bind(this)}>New Contact!</button>
             {this.state.contacts.map(function(contact){
-              return <Contacts contactData = {contact} />
+              return <Contacts contactData = {contact} 
+              // delete={this.deleteContact} 
+              />
               
             })}
            
           </div>
+        )}
+          {/*end else statement */}
         </div>
 
       )}
@@ -92,6 +97,14 @@ class App extends Component {
     })
   }
 
+  deleteContact(){
+    request.delete('http://localhost:8000/contacts/4')
+    .auth(this.state.username,this.state.password)
+    .then((res)=> {
+      this.showContacts()
+    })
+    }
+  
   username(event) {
     this.setState({
       username: event.target.value
@@ -104,6 +117,14 @@ class App extends Component {
       password: event.target.value
     })
     localStorage.password = event.target.value
+  }
+
+  logout(event){
+    this.setState({
+      loggedOut: true,
+      username:null,
+      password:null
+    })
   }
 
   componentDidMount () {
@@ -139,7 +160,7 @@ class Contacts extends Component {
         <div>{this.props.contactData.name}</div>
         <div>{this.props.contactData.city}</div>
         <button type="button" className="button">Edit</button>
-        <button type="button" className="button">Delete</button>
+        <button type="button" className="button" onClick={this.props.delete}>Delete</button>
       </div>
     )
   }

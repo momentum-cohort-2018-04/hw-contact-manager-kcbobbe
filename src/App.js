@@ -18,21 +18,32 @@ class App extends Component {
       contactName:null,
       contactCity:null
     }
+    this.logout = this.logout.bind(this)
+    // localStorage.loggedOut = false
   }
     render() {
       return (
         <div>
-        {this.state.addContact ?(
+        {
+          this.state.addContact ?(
           <div>
+            <h1>Add a Contact!</h1>
+          <div className = "input-field">
             <label>Name</label>
             <input type = 'text' onChange = {this.contactName.bind(this)} />
+          </div>
+          <div className = "input-field">
             <label>City</label>
             <input type= 'text' onChange = {this.contactCity.bind(this)}/>
             <button type = "button" onClick = {this.newContact.bind(this)}>Submit!</button>
+            <button type = "button" onClick = {this.cancelAdd.bind(this)}>Cancel</button>
+
+          </div>
           </div>
         ) : 
           this.state.loggedOut ?(
         <div className = "App">
+        <h1>THE CONTACT MANAGER</h1>
           <div className = "input-field">
             <label>Username: </label>
             <input type='text' onChange = {this.username.bind(this)}/>
@@ -48,8 +59,15 @@ class App extends Component {
         
         ) : (
           <div>
+           <div className = "input-field">
+            <label>Search for Contacts</label>
+            <input type = 'text'/>
+          </div>
+          <div className = "header">
           <button type = "button" className="button" onClick = {this.logout.bind(this)}>LOGOUT</button>
           <button type="button" className="button" onClick = {this.clickNewContact.bind(this)}>New Contact!</button>
+          </div>
+         
             {this.state.contacts.map(function(contact){
               return <Contacts contactData = {contact}
               // delete={this.deleteContact}
@@ -83,11 +101,11 @@ class App extends Component {
     request.get('http://localhost:8000/contacts')
     .auth(this.state.username,this.state.password)
     .then((res) => {
-      console.log(res.body[0].id)
       console.log("LOGGED IN")
       this.setState({loggedOut:false})
       this.setState({contacts : res.body})
       console.log(this.state.loggedIn)
+      localStorage.loggedOut = false
     })
   
     .then((contacts) => {
@@ -134,6 +152,11 @@ class App extends Component {
     })
   }
 
+  cancelAdd(){
+    this.setState({
+      addContact:false
+    })
+  }
   // deleteContact(){
   //   request.delete('http://localhost:8000/contacts/4')
   //   .auth(this.state.username,this.state.password)
@@ -162,13 +185,18 @@ class App extends Component {
       username:null,
       password:null
     })
+    localStorage.loggedOut = true
+    
   }
 
   componentDidMount () {
     this.setState({
       username: localStorage.username,
-      password: localStorage.password})
+      password: localStorage.password,
+      // loggedOut: localStorage.loggedOut,
+      })
       console.log("logged in")
+
     
   }
 
@@ -235,13 +263,30 @@ class Contacts extends Component {
       contactName:'null',
       contactCity:'null'
     })
-  
+    // this.showContacts()
   })
   }
 
+  showContacts () {
+    request.get('http://localhost:8000/contacts')
+    .auth(localStorage.username,localStorage.password)
+    .then((res) => {
+      console.log(res.body[0].id)
+      this.setState({contacts : res.body})
+      console.log(this.state.contacts)
+    })
+  
+    .then((contacts) => { 
+      // e
+    })
+
+    }
+
+
+
   render() {
     return (
-      <div>
+      <div className= "contact-list">
         {this.state.editContact ?(
           <div>
             <label>Name</label>
@@ -252,8 +297,7 @@ class Contacts extends Component {
           </div>       
          ) : (
         <div>
-          <div>{this.props.contactData.id}</div>
-          <div>{this.props.contactData.name}</div>
+          <div><strong>{this.props.contactData.name}</strong></div>
           <div>{this.props.contactData.city}</div>
           <button type="button" className="button" onClick = {this.clickEditContact.bind(this)}>Edit</button>
           <button type="button" className="button" onClick={this.deleteContact.bind(this)}>Delete</button>
@@ -263,5 +307,8 @@ class Contacts extends Component {
       </div>
     )
   }
+
+
+  
 }
 export default App;

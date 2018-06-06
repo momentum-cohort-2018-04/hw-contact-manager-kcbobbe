@@ -1,9 +1,29 @@
 {
   "contacts": [
     {
-      "id": 3,
-      "name": "Chris",
-      "city": "Chicago"
+      "id": "5d21ced5-9130-42a9-8052-6142a8a4c8f5",
+      "name": "Sarah",
+      "city": "Chapel Hill"
+    },
+    {
+      "id": "f0ea52cc-bcb8-440e-9357-65c5a9c5ca00",
+      "name": "Sarah",
+      "city": "Chapel Hill"
+    },
+    {
+      "id": "d211057e-0e44-499d-97e0-6b54755683dd",
+      "name": "Sarah",
+      "city": "Chapel Hill"
+    },
+    {
+      "id": "781fa58c-f6d7-4f41-8bb8-29774ad0c76a",
+      "name": "Katie",
+      "city": "Chapel Hill"
+    },
+    {
+      "id": "3786fbc3-8d01-4fa8-a8f9-2db06a334ffd",
+      "name": "Marshall Clark",
+      "city": "Pittsboro"
     }
   ]
 }

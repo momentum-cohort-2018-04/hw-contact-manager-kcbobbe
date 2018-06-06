@@ -13,13 +13,25 @@ class App extends Component {
       contacts: [],
       username: null,
       password: null,
-      loggedOut: true
+      loggedOut: true,
+      addContact:false,
+      contactName:null,
+      contactCity:null
     }
   }
     render() {
       return (
         <div>
-        {this.state.loggedOut ?(
+        {this.state.addContact ?(
+          <div>
+            <label>Name</label>
+            <input type = 'text' onChange = {this.contactName.bind(this)} />
+            <label>City</label>
+            <input type= 'text' onChange = {this.contactCity.bind(this)}/>
+            <button type = "button" onClick = {this.newContact.bind(this)}>Submit!</button>
+          </div>
+        ) : 
+          this.state.loggedOut ?(
         <div className = "App">
           <div className = "input-field">
             <label>Username: </label>
@@ -37,9 +49,9 @@ class App extends Component {
         ) : (
           <div>
           <button type = "button" className="button" onClick = {this.logout.bind(this)}>LOGOUT</button>
-          <button type="button" className="button" onClick = {this.newContact.bind(this)}>New Contact!</button>
+          <button type="button" className="button" onClick = {this.clickNewContact.bind(this)}>New Contact!</button>
             {this.state.contacts.map(function(contact){
-              return <Contacts contactData = {contact} 
+              return <Contacts contactData = {contact}
               // delete={this.deleteContact}
               />
               
@@ -85,6 +97,23 @@ class App extends Component {
 
     }
   
+  clickNewContact (){
+    this.setState({
+      addContact:true
+    })
+  }
+
+  contactName(event){
+    this.setState({
+      contactName: event.target.value
+    })
+  }
+
+  contactCity(event){
+    this.setState({
+      contactCity: event.target.value
+    })
+  }
   
   newContact () {
     const newId = uuid()
@@ -92,10 +121,15 @@ class App extends Component {
     .auth(this.state.username,this.state.password)
     .send({
       "id" : newId,
-      "name" : "Sarah",
-      "city": "Chapel Hill"
+      "name" : this.state.contactName,
+      "city": this.state.contactCity,
     })
     .then((res)=> {
+      this.setState({
+        addContact:false,
+        contactName:'null',
+        contactCity:'null'
+      })
       this.showContacts()
     })
   }

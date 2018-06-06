@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import request from 'superagent'
 import 'shoelace-css/dist/shoelace.css'
+import uuid from 'uuid/v4'
+
 /* global localStorage */
 
 class App extends Component {
@@ -38,7 +40,7 @@ class App extends Component {
           <button type="button" className="button" onClick = {this.newContact.bind(this)}>New Contact!</button>
             {this.state.contacts.map(function(contact){
               return <Contacts contactData = {contact} 
-              // delete={this.deleteContact} 
+              // delete={this.deleteContact}
               />
               
             })}
@@ -85,10 +87,11 @@ class App extends Component {
   
   
   newContact () {
+    const newId = uuid()
     request.post('http://localhost:8000/contacts')
     .auth(this.state.username,this.state.password)
     .send({
-      "id" : 4,
+      "id" : newId,
       "name" : "Sarah",
       "city": "Chapel Hill"
     })
@@ -97,13 +100,13 @@ class App extends Component {
     })
   }
 
-  deleteContact(){
-    request.delete('http://localhost:8000/contacts/4')
-    .auth(this.state.username,this.state.password)
-    .then((res)=> {
-      this.showContacts()
-    })
-    }
+  // deleteContact(){
+  //   request.delete('http://localhost:8000/contacts/4')
+  //   .auth(this.state.username,this.state.password)
+  //   .then((res)=> {
+  //     this.showContacts()
+  //   })
+  //   }
   
   username(event) {
     this.setState({
@@ -153,6 +156,15 @@ class Contacts extends Component {
       contacts: [],
     }
   }
+
+  deleteContact(){
+    const id = this.props.contactData.id
+    request.delete('http://localhost:8000/contacts/'+id)
+    .auth(localStorage.username,localStorage.password)
+     .then((res)=> {
+     })
+    }
+
   render() {
     return (
       <div>
@@ -160,7 +172,7 @@ class Contacts extends Component {
         <div>{this.props.contactData.name}</div>
         <div>{this.props.contactData.city}</div>
         <button type="button" className="button">Edit</button>
-        <button type="button" className="button" onClick={this.props.delete}>Delete</button>
+        <button type="button" className="button" onClick={this.deleteContact.bind(this)}>Delete</button>
       </div>
     )
   }

@@ -188,6 +188,9 @@ class Contacts extends Component {
     super()
     this.state = {
       contacts: [],
+      editContact : false,
+      editedName : 'null',
+      editedCity : 'null',
     }
   }
 
@@ -198,15 +201,65 @@ class Contacts extends Component {
      .then((res)=> {
      })
     }
+  
+    clickEditContact (){
+      this.setState({
+        editContact : true
+      })
+    }
+  
+    editedName(event){
+      this.setState({
+        editedName: event.target.value
+      })
+    }
+  
+    editedCity(event){
+      this.setState({
+        editedCity: event.target.value
+      })
+    }
+  
+
+  editContact(){
+    const id = this.props.contactData.id
+    request.put('http://localhost:8000/contacts/'+id)
+    .auth(localStorage.username,localStorage.password)
+    .send({
+    "name" : this.state.editedName,
+    "city": this.state.editedCity})
+    .then((res)=> {
+    console.log('edited')
+    this.setState({
+      editContact:false,
+      contactName:'null',
+      contactCity:'null'
+    })
+  
+  })
+  }
 
   render() {
     return (
       <div>
-        <div>{this.props.contactData.id}</div>
-        <div>{this.props.contactData.name}</div>
-        <div>{this.props.contactData.city}</div>
-        <button type="button" className="button">Edit</button>
-        <button type="button" className="button" onClick={this.deleteContact.bind(this)}>Delete</button>
+        {this.state.editContact ?(
+          <div>
+            <label>Name</label>
+            <input type = 'text' onChange = {this.editedName.bind(this)} />
+            <label>City</label>
+            <input type= 'text' onChange = {this.editedCity.bind(this)}/>
+            <button type = "button" onClick = {this.editContact.bind(this)}>Submit!</button>
+          </div>       
+         ) : (
+        <div>
+          <div>{this.props.contactData.id}</div>
+          <div>{this.props.contactData.name}</div>
+          <div>{this.props.contactData.city}</div>
+          <button type="button" className="button" onClick = {this.clickEditContact.bind(this)}>Edit</button>
+          <button type="button" className="button" onClick={this.deleteContact.bind(this)}>Delete</button>
+        </div>
+        )}
+
       </div>
     )
   }

@@ -196,11 +196,15 @@ class App extends Component {
     request.get('http://localhost:8000/contacts')
       .auth(localStorage.username,localStorage.password)
       .then((res) => {
-      // this.setState({loggedOut:false})
+      this.setState({loggedOut:false})
         this.setState({contacts : res.body})
         console.log(this.state.loggedOut)
-        localStorage.loggedOut = false
-        this.setState({loggedOut: false})
+      })
+      .catch((err)=> {
+        if (err.status === 401){
+          localStorage.clear()
+          
+        }
       })
 
     this.setState({
@@ -237,6 +241,10 @@ class Contacts extends Component {
     request.delete('http://localhost:8000/contacts/'+id)
       .auth(localStorage.username,localStorage.password)
       .then((res)=> {
+        console.log(this.state.contacts)
+        // let deletedArray = this.state.contacts
+        // deletedArray = deletedArray.filter(contact => contact !==id)
+
       })
   }
 

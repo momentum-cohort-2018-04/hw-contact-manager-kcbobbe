@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  
 }
 
 .App-logo {
@@ -25,4 +26,32 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.input-field{
+  width:50%;
+  margin:auto;
+  text-align:center;
+}
+
+.input-field button{
+  margin:1rem;
+}
+
+.header{
+  text-align:center;
+  padding:3 rem;
+}
+.header button{
+  margin:1rem;
+}
+.contact-list{
+  text-align:center;
+  margin:3rem;
+}
+.contact-list button{
+  margin:1rem;
+}
+h1{
+  text-align:center;
 }

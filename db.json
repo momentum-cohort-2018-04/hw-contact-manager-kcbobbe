@@ -1,6 +1,9 @@
 {
   "contacts": [
-    {"id": 1},
-    {"id": 2}
+    {
+      "id": "f92b33d6-f9fb-4ed4-811c-d73791c089d5",
+      "name": "sarah",
+      "city": "nc"
+    }
   ]
 }

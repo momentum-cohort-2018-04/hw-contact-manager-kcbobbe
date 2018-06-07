@@ -18,13 +18,34 @@ class App extends Component {
       contactName:null,
       contactCity:null
     }
-    this.logout = this.logout.bind(this)
-    // localStorage.loggedOut = false
+    // this.logout = this.logout.bind(this)
+    this.login = this.login.bind(this)
+    console.log(this.state);
+    // localStorage.loggedOut = 0
   }
     render() {
       return (
         <div>
         {
+          this.state.loggedOut ?(
+            <div>
+            {/* <h1>logged out</h1> */}
+            <div className = "App">
+            <h1>THE CONTACT MANAGER</h1>
+              <div className = "input-field">
+                <label>Username: </label>
+                <input type='text' onChange = {this.username.bind(this)}/>
+              </div>
+    
+              <div className="input-field">
+                <label>Password: </label>
+                <input type="password" onChange = {this.password.bind(this)}/>
+              </div>   
+                    
+              <button type="button" className="button" onClick = {this.showContacts.bind(this)}>Submit!</button>
+            </div>
+            </div>
+          ) :
           this.state.addContact ?(
           <div>
             <h1>Add a Contact!</h1>
@@ -40,24 +61,9 @@ class App extends Component {
 
           </div>
           </div>
-        ) : 
-          this.state.loggedOut ?(
-        <div className = "App">
-        <h1>THE CONTACT MANAGER</h1>
-          <div className = "input-field">
-            <label>Username: </label>
-            <input type='text' onChange = {this.username.bind(this)}/>
-          </div>
-
-          <div className="input-field">
-            <label>Password: </label>
-            <input type="password" onChange = {this.password.bind(this)}/>
-          </div>   
-                
-          <button type="button" className="button" onClick = {this.showContacts.bind(this)}>Submit!</button>
-        </div>
+        ) 
         
-        ) : (
+         : (
           <div>
            <div className = "input-field">
             <label>Search for Contacts</label>
@@ -83,7 +89,7 @@ class App extends Component {
       )}
   // componentDidMount () {
   //   request.get('http://localhost:8000/contacts')
-  //   .auth(this.state.username,this.state.password)
+  //   . auth(this.state.username,this.state.password)
   //   .then((res) => {
   //     console.log(res.body)
   //   })
@@ -96,23 +102,21 @@ class App extends Component {
   //     })
   //   })
   // }
+  login() {
 
+  }
   showContacts () {
+  
     request.get('http://localhost:8000/contacts')
     .auth(this.state.username,this.state.password)
     .then((res) => {
       console.log("LOGGED IN")
       this.setState({loggedOut:false})
       this.setState({contacts : res.body})
-      console.log(this.state.loggedIn)
+      console.log(this.state.loggedOut)
       localStorage.loggedOut = false
     })
   
-    .then((contacts) => {
-      return contacts
-      // e
-    })
-
     }
   
   clickNewContact (){
@@ -186,10 +190,27 @@ class App extends Component {
       password:null
     })
     localStorage.loggedOut = true
+    localStorage.username = null
+    localStorage.password = null
+    console.log(this.state)
     
   }
 
   componentDidMount () {
+    console.log('heyy')
+    request.get('http://localhost:8000/contacts')
+    .auth(localStorage.username,localStorage.password)
+    .then((res) => {
+      console.log("woot")
+      this.setState({loggedOut:false})
+      this.setState({contacts : res.body})
+      console.log(this.state.loggedOut)
+      console.log('component DID mount')
+      localStorage.loggedOut = false
+    })
+  
+
+
     this.setState({
       username: localStorage.username,
       password: localStorage.password,

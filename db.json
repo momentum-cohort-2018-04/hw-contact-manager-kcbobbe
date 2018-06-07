@@ -1,3 +1,14 @@
 {
-  "contacts": []
+  "contacts": [
+    {
+      "id": "fb1d1a5f-5a1e-4986-8c31-bbe86fbb9418",
+      "name": "sarah",
+      "city": "the earth"
+    },
+    {
+      "id": "f33f9a6e-c773-4d83-9041-fa93054e89f8",
+      "name": "Sarah",
+      "city": "unc"
+    }
+  ]
 }
